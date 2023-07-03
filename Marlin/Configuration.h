@@ -22,6 +22,7 @@
 #pragma once
 
 #define CONFIG_EXAMPLES_DIR "Creality/Ender-3 V2/CrealityV422/CrealityUI"
+#define NO_AUTO_ASSIGN_WARNING  // Disable serial warnings
 
 /**
  * Configuration.h
