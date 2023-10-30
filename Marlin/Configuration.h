@@ -1655,7 +1655,7 @@
 #define Z_CLEARANCE_BETWEEN_PROBES  4 // (mm) Z Clearance between probe points
 #define Z_CLEARANCE_MULTI_PROBE     4 // (mm) Z Clearance between multiple probes
 #define Z_PROBE_ERROR_TOLERANCE     3 // (mm) Tolerance for early trigger (<= -probe.offset.z + ZPET)
-#define Z_AFTER_PROBING             4 // (mm) Z position after probing is done
+//#define Z_AFTER_PROBING           4 // (mm) Z position after probing is done
 
 #define Z_PROBE_LOW_POINT          -2 // (mm) Farthest distance below the trigger-point to go before stopping
 
