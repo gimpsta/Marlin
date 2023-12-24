@@ -693,9 +693,9 @@
     #define DEFAULT_Kd_LIST {  78.81,  78.81 }
   #else
     // Ender 3 v2
-    #define DEFAULT_Kp  13.88
-    #define DEFAULT_Ki   0.69
-    #define DEFAULT_Kd  70.21
+    #define DEFAULT_Kp  13.35
+    #define DEFAULT_Ki   0.65
+    #define DEFAULT_Kd  68.62
   #endif
 #else
   #define BANG_MAX 255    // Limit hotend current while in bang-bang mode; 255=full current
@@ -782,9 +782,9 @@
   //#define PID_BED_DEBUG // Print Bed PID debug data to the serial port.
 
   // Ender 3 V2
-  #define DEFAULT_bedKp  98.17
-  #define DEFAULT_bedKi  17.28
-  #define DEFAULT_bedKd 371.73
+  #define DEFAULT_bedKp 100.06
+  #define DEFAULT_bedKi  18.67
+  #define DEFAULT_bedKd 357.44
 
   // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
 #else
@@ -831,9 +831,9 @@
   // Lasko "MyHeat Personal Heater" (200w) modified with a Fotek SSR-10DA to control only the heating element
   // and placed inside the small Creality printer enclosure tent.
   //
-  #define DEFAULT_chamberKp 13.88
-  #define DEFAULT_chamberKi 0.69
-  #define DEFAULT_chamberKd 70.21
+  #define DEFAULT_chamberKp 37.04
+  #define DEFAULT_chamberKi 1.40
+  #define DEFAULT_chamberKd 655.17
   // M309 P37.04 I1.04 D655.17
 
   // FIND YOUR OWN: "M303 E-2 C8 S50" to run autotune on the chamber at 50 degreesC for 8 cycles.
