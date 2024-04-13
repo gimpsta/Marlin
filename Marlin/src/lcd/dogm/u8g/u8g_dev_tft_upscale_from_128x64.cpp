@@ -53,12 +53,12 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "../../inc/MarlinConfig.h"
+#include "../../../inc/MarlinConfig.h"
 
 #if HAS_MARLINUI_U8GLIB && (PIN_EXISTS(FSMC_CS) || HAS_SPI_GRAPHICAL_TFT || HAS_LTDC_GRAPHICAL_TFT)
 
 #include "HAL_LCD_com_defines.h"
-#include "marlinui_DOGM.h"
+#include "../marlinui_DOGM.h"
 
 #include <string.h>
 
@@ -66,7 +66,7 @@
   #define HAS_LCD_IO 1
 #endif
 
-#include "../tft_io/tft_io.h"
+#include "../../tft_io/tft_io.h"
 TFT_IO tftio;
 
 #define WIDTH  LCD_PIXEL_WIDTH
@@ -74,21 +74,17 @@ TFT_IO tftio;
 #define PAGE_HEIGHT 8
 
 #if ENABLED(TOUCH_SCREEN_CALIBRATION)
-  #include "../tft_io/touch_calibration.h"
-  #include "../marlinui.h"
+  #include "../../tft_io/touch_calibration.h"
+  #include "../../marlinui.h"
 #endif
 
-#if HAS_TOUCH_BUTTONS && HAS_TOUCH_SLEEP
-  #define HAS_TOUCH_BUTTONS_SLEEP 1
-#endif
-
-#include "../touch/touch_buttons.h"
-#include "../scaled_tft.h"
+#include "../../touch/touch_buttons.h"
+#include "../../scaled_tft.h"
 
 #define X_HI (UPSCALE(TFT_PIXEL_OFFSET_X, WIDTH) - 1)
 #define Y_HI (UPSCALE(TFT_PIXEL_OFFSET_Y, HEIGHT) - 1)
 
-// RGB565 color picker: https://embeddednotepad.com/page/rgb565-color-picker
+// RGB565 color picker: https://rgbcolorpicker.com/565
 // Hex code to color name: https://www.color-name.com/
 
 #define COLOR_BLACK       0x0000  // #000000
@@ -389,25 +385,29 @@ uint8_t u8g_dev_tft_320x240_upscale_from_128x64_fn(u8g_t *u8g, u8g_dev_t *dev, u
 
     case U8G_DEV_MSG_PAGE_FIRST: {
       page = 0;
-      #if HAS_TOUCH_BUTTONS_SLEEP
-        static bool sleepCleared;
-        if (touchBt.isSleeping()) {
-          if (!sleepCleared) {
-            sleepCleared = true;
-            u8g_upscale_clear_lcd(u8g, dev, buffer);
-            TERN_(HAS_TOUCH_BUTTONS, redrawTouchButtons = true);
+      #if HAS_TOUCH_BUTTONS
+        #if HAS_DISPLAY_SLEEP
+          static bool sleepCleared;
+          if (touchBt.isSleeping()) {
+            if (!sleepCleared) {
+              sleepCleared = true;
+              u8g_upscale_clear_lcd(u8g, dev, buffer);
+              redrawTouchButtons = true;
+            }
+            break;
           }
-          break;
-        }
-        else
-          sleepCleared = false;
+          else
+            sleepCleared = false;
+        #endif
+        drawTouchButtons(u8g, dev);
       #endif
-      TERN_(HAS_TOUCH_BUTTONS, drawTouchButtons(u8g, dev));
       setWindow(u8g, dev, TFT_PIXEL_OFFSET_X, TFT_PIXEL_OFFSET_Y, X_HI, Y_HI);
     } break;
 
     case U8G_DEV_MSG_PAGE_NEXT:
-      if (TERN0(HAS_TOUCH_BUTTONS_SLEEP, touchBt.isSleeping())) break;
+      #if HAS_TOUCH_BUTTONS && HAS_DISPLAY_SLEEP
+        if (touchBt.isSleeping()) break;
+      #endif
       if (++page > (HEIGHT / PAGE_HEIGHT)) return 1;
 
       for (uint8_t y = 0; y < PAGE_HEIGHT; ++y) {
